@@ -1,4 +1,4 @@
-const { gql } = require("apollo-server-express");
+const { gql, } = require("apollo-server-express");
 
 const typeDefs = gql`
   type User {
@@ -7,11 +7,11 @@ const typeDefs = gql`
     email: String
     password: String
     bookCount: Int
-    savedBooks: [String]!
+    savedBooks: [String]
   }
 
   type Auth {
-    token: ID!
+    token: ID
     user: User
   }
 
@@ -21,12 +21,9 @@ const typeDefs = gql`
     description: String
     title: String
     image: String
-    link: String
   }
 
   type Query {
-    users: [User]!
-    user(userId: ID!): User
     # Because we have the context functionality in place to check a JWT and decode its data, we can use a query that will always find and return the logged in user's data
     me: User
   }
@@ -35,7 +32,9 @@ const typeDefs = gql`
     addUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
 
-    saveBook(bookId: ID!, authors: [String], description: String, title: String, image: String, link: String): User
+    saveBook(bookId: ID!, authors: [String], description: String, title: String, image: String): Book
     removeBook(bookId: ID!): User        
   }
 `;
+
+module.exports = typeDefs;

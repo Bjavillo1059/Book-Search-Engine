@@ -1,32 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-import { getMe, deleteBook } from '../utils/API';
-import { useQuery, useMutation } from '@apollo/client';
+// import { getMe, deleteBook } from '../utils/API';
+import { useQuery } from '@apollo/client';
+
+// import MeList from '../components/MeList';
 
 import Auth from '../utils/auth';
 import { GET_ME } from '../utils/queries';
 import { REMOVE_BOOK } from '../utils/mutations';
 import { removeBookId } from '../utils/localStorage';
 
+// hooks can only be used inside of components
+
 const SavedBooks = () => {
   // const [userData, setUserData] = useState({});
+
+  // this variable is used to store the user data from the local storage
   const { loading, data } = useQuery(GET_ME);
 
-  // use this to determine if `useQuery()` is working
-  // const userDataLength = Object.keys(userData).length;
+  // this userData variable is used to store the user data from the local storage
   const userData = data ?.me || [];
 
+  // if the user is not logged in, redirect to the login page
     return (
       <main>
         <div className="flex-row justify-center">
           <div className="col-12 col-md-8 mb-3">
+            // this 
             {loading ? (
-              <div>Loading...</div>
+              <div>loading...</div>
             ) : (
-              <>
-              userData={userData}
-              </>
+              <div
+              me={userData}
+              />
               )}
           </div>
         </div>
@@ -59,38 +66,40 @@ const SavedBooks = () => {
   // }, [userDataLength]);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId) => {
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    if (!token) {
-      return false;
-    }
-
-    const [ removeBook, { error } ] = useMutation(REMOVE_BOOK);
+  // const handleDeleteBook = async (bookId) => {
     
-    try {
-      // const { response } = removeBook({
-      //   variables: { bookId },
-      // });
-      const response = await deleteBook(bookId, token);
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+  //   const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-      const updatedUser = await response.json();
-      setUserData(updatedUser);
-      // upon success, remove book's id from localStorage
-      removeBookId(bookId);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //   if (!token) {
+  //     return false;
+  //   }
 
-  // if data isn't here yet, say so
-  if (!userDataLength) {
-    return <h2>LOADING...</h2>;
-  }
+    // const [ removeBook, { data } ] = useMutation(REMOVE_BOOK);
+    
+    // try {
+    //   const { response } = removeBook({
+    //     variables: { bookId },
+    //   });
+    //   // const response = await deleteBook(bookId, token);
+
+  //   //   if (!response.ok) {
+  //   //     throw new Error('something went wrong!');
+  //   //   }
+
+  //   //   // const updatedUser = await response.json();
+  //   //   // setUserData(updatedUser);
+  //   //   // upon success, remove book's id from localStorage
+  //   //   removeBookId(bookId);
+  //   // } catch (err) {
+  //   //   console.error(err);
+  //   // }
+  // };
+
+  // // if data isn't here yet, say so
+  // if (!userDataLength) {
+  //   return <h2>LOADING...</h2>;
+  // }
 
   return (
     <>
@@ -105,7 +114,7 @@ const SavedBooks = () => {
             ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
-        <CardColumns>
+        {/* <CardColumns>
           {userData.savedBooks.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
@@ -121,7 +130,7 @@ const SavedBooks = () => {
               </Card>
             );
           })}
-        </CardColumns>
+        </CardColumns> */}
       </Container>
     </>
   );
