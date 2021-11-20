@@ -28,13 +28,13 @@ const LoginForm = () => {
 
       });
       console.log(data); 
-      Auth.login(data.token);     
+      Auth.login(data.login.token);     
 
   setUserFormData('');
   } catch (err) {
     console.error(err);
   }
-    //   
+      
   };
 
   return (

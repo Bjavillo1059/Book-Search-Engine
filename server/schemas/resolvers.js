@@ -32,8 +32,8 @@ const resolvers = {
       if (!correctPw) {
         throw new AuthenticationError('Incorrect password!');
       }
-
       const token = signToken(user);
+      console.log(token);
       return { token, user };
     },
 
