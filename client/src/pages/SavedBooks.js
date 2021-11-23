@@ -14,31 +14,45 @@ import { removeBookId } from "../utils/localStorage";
 const SavedBooks = () => {
   // this variable is used to store the user data from the local storage
   const { loading, data } = useQuery(GET_ME);
-  // this variable uses the mutation to delete a book
-  const [removeBook] = useMutation(REMOVE_BOOK);
   
+  // this variable uses the mutation to delete a book
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+  
+  const userData = data?.me || data?.user || {};
 
   
   // this userData variable is used to store the user data from the local storage
-  const userData = data?.me || [];
 
   
   const handleDeleteBook = async (bookId) => {
-    // event.preventDefault();  
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+
+    if (!token) {
+      return false;
+    }
 
     try {
-      const { data } = await removeBook({
-        variables: { bookId },
+      await removeBook({
+        variables: {
+          bookId
+        }
       });
 
-      console.log(data);
-      Auth.login(data.login.token);
+      if (error) {
+        throw new Error('something went wrong!');
+      }
 
+      // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
     }
   };
+
+  // if data isn't here yet, say so
+  if (loading) {
+    return <h2>LOADING...</h2>;
+  }
 
   return (
     <>
