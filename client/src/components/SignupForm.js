@@ -3,7 +3,6 @@ import { Form, Button, Alert } from 'react-bootstrap';
 
 import { useMutation } from '@apollo/client';
 import { ADD_USER, } from '../utils/mutations';
-import { GET_ME } from '../utils/queries';
 import Auth from '../utils/auth';
 
 const SignupForm = () => {
@@ -20,7 +19,7 @@ const SignupForm = () => {
   };
 
 
-    const [addUser, { error }] = useMutation(ADD_USER);
+    const [addUser] = useMutation(ADD_USER);
 
     
         const handleFormSubmit = async (event) => {
@@ -36,7 +35,7 @@ const SignupForm = () => {
 
         });
         console.log(data); 
-        Auth.login(data.token);     
+        Auth.login(data.login.token);     
 
     setUserFormData('');
     } catch (err) {

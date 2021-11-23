@@ -10,7 +10,7 @@
     "@testing-library/user-event": "^7.1.2",
     "apollo-server-express": "^2.15.0",
     "bootstrap": "^4.4.1",
-    "graphql": "^16.0.1",
+    "graphql": "^15.5.1",
     "jwt-decode": "^2.2.0",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",

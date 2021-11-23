@@ -26,9 +26,9 @@ const LoginForm = () => {
           password: userFormData.password,
         },
 
-      });
-      console.log(data); 
+      });      
       Auth.login(data.login.token);     
+      console.log(data.login); 
 
   setUserFormData('');
   } catch (err) {

@@ -4,7 +4,7 @@ import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'reac
 import Auth from '../utils/auth';
 import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
-import { saveBook, searchGoogleBooks } from '../utils/API';
+import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
@@ -12,7 +12,7 @@ const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
-  const [saveBook] = useMutation(SAVE_BOOK);
+  const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
@@ -61,26 +61,18 @@ const SearchBooks = () => {
     console.log(bookToSave);
     // find the book in `searchedBooks` state by the matching id
     
-    
-    // get token
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-    
-    if (!token) {
-      return false;
-    }
-    
-    const { data } = await saveBook({
-      variables: {
-        bookId: bookToSave.bookId,
-        authors: bookToSave.authors,
-        title: bookToSave.title,
-        description : bookToSave.description,
-        image: bookToSave.image,
-      },
-    });
     try {
+      const { data } = await saveBook({
+        variables: {
+          input: bookToSave
+        },
+      });
+      
+      console.log(data);
+      Auth.login(data.login.token);
+   
       // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
+      setSavedBookIds([bookToSave.bookId, ...savedBookIds]);
     } catch (err) {
       console.error(err);
     }
