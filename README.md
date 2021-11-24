@@ -3,7 +3,7 @@
 
 ## Deployment
 
-[Book Search deployed site](https://6194a126cd6e9d0007fb5a60--pensive-sinoussi-0c24a1.netlify.app/)
+[Book Search deployed site](https://kryptik-book-search.herokuapp.com/)
 
 <img src="./client/public/img/cover.PNG" alt="Book Search" />
 
